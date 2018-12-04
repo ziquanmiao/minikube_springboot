@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springbootapp
+  template:
+    metadata:
+      labels:
+        app: springbootapp
+    spec:
+      containers:
+      - name: springbootapp
+        image: springboot:001
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springbootapp
+spec:
+  selector:
+    app: springbootapp
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+  # type: LoadBalancer

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springbootapp
+  template:
+    metadata:
+      labels:
+        app: springbootapp
+      annotations:
+        ad.datadoghq.com/springbootapp.check_names: '["openmetrics"]'
+        ad.datadoghq.com/springbootapp.init_configs: '[{}]'
+        ad.datadoghq.com/springbootapp.instances: '[{"prometheus_url":"http://%%host%%:%%port%%/actuator/prometheus","metrics":["*"],"namespace":"springboot"}]'
+    spec:
+      containers:
+      - name: springbootapp
+        image: zmiao1/sample_springboot:015
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        # Below is Datadog related
+        ## pertains to infrastructure
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_STATSD_PORT
+          value: '8125'
+        ## pertains to apm
+        - name: DD_AGENT_PORT
+          value: '8126'
+        ## pertains to apm
+        - name: DD_SERVICE_NAME
+          value: 'SpringBoot_Service'
+        - name: DD_JMXFETCH_ENABLED
+          value: "true"
+        - name: DD_JMXFETCH_STATSD_PORT
+          value: '8125'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springbootapp
+spec:
+  selector:
+    app: springbootapp
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+  # type: LoadBalancer
