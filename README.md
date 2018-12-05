@@ -7,8 +7,29 @@ SpringBoot Minikube example
 * [Docker](https://www.docker.com/install/) (CE is fine)
 * `git`
 * [java](https://www.java.com/en/download/) 
-* [maven]() - optional
 
+### Setup for Linux
+
+1. Java
+
+Download and Install
+```
+wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/11.0.1+13/90cf5d8f270a4347a95050320eef3fb7/jdk-11.0.1_linux-x64_bin.tar.gz
+
+tar zxvf jdk-11.0.1_linux-x64_bin.tar.gz
+```
+symlink and access
+```
+ln -s PATH_TO_JAVA/bin ~/bin
+```
+
+2. Docker
+
+Follow workflow outlined [here](https://docs.docker.com/install/linux/docker-ce/debian/#set-up-the-repository)
+
+3. Minikube + kubectl
+
+Follow recommendation [here](https://github.com/phrawzty/datadog_k8s_workshop#install-minikube-and-kubectl)
 
 ## Workshop
 
